@@ -7,4 +7,167 @@ Andres Felipe Velasquez Salinas - Samuel David Rivera Gonzalez
 Juego Pokemon- Desarrollos Innovadores 
 #1 El juego Pokemon cuenta con interfaz grafica realizada con la libreria SFML, esto es un requisito para poder ejecutar el juego, hay que tener la libreria SFML instalada y vinculada en el interprete que utilices, en este caso utilizamos Visual Studio Code
 
-#2 
+
+# Juego Pokémon en C++ con SFML
+
+
+Un emocionante juego de combate Pokémon desarrollado en C++ utilizando la biblioteca SFML. Incluye sistema de combate por turnos, selección de Pokémon, menús interactivos y efectos visuales.
+
+# Descripcion
+
+Integrantes:
+Andres Felipe Velasquez Salinas
+Samuel David Rivera Gonzalez
+
+Desarrollo innovador: Integracion de interfaz grafica
+
+- ¿Para qué se implementó?
+Se implemento para innovar el codigo del juego de forma
+representativa y en 2D, que seria algo importante dentro 
+de la categoria de "Juego" y se pueda ver graficamente
+el juego y lo que puede ser la programacion ilustrada 
+en una pantalla para no tener que jugar simplemente en una 
+terminal textual
+
+- ¿Por qué se consideró necesario?
+Porque al representar de forma grafica el juego sabemos que
+es lo que esta pasando real y explicitamente en el juego,
+aparte de verse mas atractivo visualmente tambien es muy funcional
+
+- ¿Cómo se llevó a cabo su implementación?
+Principalmente el utilizar la libreria SFML, que fue en lo que mas 
+se baso la gran mayoria de codigo para que se vea mejor visualmente, 
+ya que gran parte del proyecto se enfoco en agregar estos atrivutos 
+graficos al juego
+
+## Características
+- Combates Pokémon por turnos
+
+- Sistema de selección de ataques
+
+- Animaciones durante los combates
+
+- Menú principal interactivo
+
+- Barra de vida dinámica
+
+- Efectos de sonido
+
+- Interfaz de usuario intuitiva
+
+
+## Requisitos Previos
+
+Para Linux (Ubuntu/Debian)
+
+```bash
+	sudo apt update
+	sudo apt install build-essential libsfml-dev
+```
+Para Windows
+
+1. Descargar SFML 2.5.1
+
+2. Instalar MinGW (recomendado con MSYS2)
+
+3. Configurar variables de entorno:
+
+4. SFML_HOME = Ruta a SFML
+
+5. Agregar %SFML_HOME%\bin al PATH
+
+## Instalación y Configuración
+
+Clonar el repositorio
+
+```bash
+	git clone https://github.com/tu-usuario/pokemon-game.git
+	cd pokemon-game
+```
+
+Compilar el proyecto
+
+- Linux:
+
+```bash
+	make
+```
+
+- Windows (con MinGW):
+
+```bash
+	mingw32-make
+```
+## Estructura
+
+## Estructura
+!pokemon-game/
+!├── 📂 assets/
+!│   ├── 🎨 fonts/
+!│   ├── 🔊 sounds/
+!│   └── 🖼️ textures/
+!├── ⚙️ bin/
+!├── 📄 include/
+!├── 💻 src/
+!└── 🛠️ Makefile
+## Ejecutar el Juego
+
+Linux
+
+```bash
+  ./bin/pokemon_game
+```
+
+Windows
+
+```bash
+  bin\pokemon_game.exe
+```
+
+## Controles
+
+## Controles
+
+## 🎮 Controles
+
+| Tecla                  | Acción                 |
+|------------------------|------------------------|
+| ⬆️⬇️⬅️➡️           | Movimiento del jugador |
+| ␣ (ESPACIO)            | Iniciar combate        |
+| C                      | Cambiar Pokémon        |
+| ↵ (ENTER)              | Seleccionar opción     |
+| ⬆️/⬇️               | Navegar menú           |
+| ⎋ (ESC)                | Salir del juego        |
+
+## Capturas
+
+<div align="center" style="display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
+  <div style="text-align: center;">
+    <img src="./assets/Images/Inicio.png" alt="Menú Inicial" width="100%">
+    <p><strong>Menú Inicial</strong></p>
+  </div>
+  <div style="text-align: center;">
+    <img src="./assets/Images/Segunda.png" alt="Pantalla Iniciar" width="100%">
+    <p><strong>Pantalla Iniciar</strong></p>
+  </div>
+  <div style="text-align: center;">
+    <img src="./assets/Images/BatallaInicial.png" alt="MInicio de batalla" width="100%">
+    <p><strong>Inicio de batalla</strong></p>
+  </div>
+</div>
+
+<div align="center" style="display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
+  <div style="text-align: center;">
+    <img src="./assets/Images/Desarrollo.png" alt="Desarrollo" width="100%">
+    <p><strong>Batalla en desarrollo</strong></p>
+  </div>
+  <div style="text-align: center;">
+    <img src="./assets/Images/Final.png" alt="Pantalla Final" width="100%">
+    <p><strong>Final de batalla</strong></p>
+  </div>
+</div>
+
+## Autores
+
+- [@AndresVelasquez10](https://github.com/AndresVelasquez10)
+- [@SAMURIVERA9](https://github.com/SAMURIVERA9)
