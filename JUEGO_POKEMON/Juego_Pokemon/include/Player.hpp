@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include "Pokemon.hpp"  // Asegúrate de incluir esto
+#include "Pokemon.hpp"
 
 class Player {
 private:
@@ -11,9 +11,9 @@ private:
     sf::Texture texture;
     float speed = 200.0f;
     
-    // Sistema de Pokémon
-    std::vector<Pokemon> pokemons;  // Equipo de Pokémon
-    int pokemonActual = 0;           // Índice del Pokémon activo
+    // Acá guardo el equipo de Pokémon del jugador
+    std::vector<Pokemon> pokemons;
+    int pokemonActual = 0; // Siempre llevo el índice del Pokémon activo
 
 public:
     Player();
@@ -25,9 +25,9 @@ public:
     sf::Vector2f getPosition() const;
     sf::FloatRect getGlobalBounds() const;
     
-    // Métodos para Pokémon - CORREGIDOS
+    // Métodos para manejar el Pokémon activo
     void cambiarPokemon();
-    Pokemon& getPokemonActual();  // Devuelve referencia
+    Pokemon& getPokemonActual();
 };
 
 #endif

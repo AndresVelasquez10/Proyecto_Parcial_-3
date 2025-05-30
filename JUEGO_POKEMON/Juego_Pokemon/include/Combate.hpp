@@ -13,9 +13,9 @@ enum class EstadoCombate {
     Resultado
 };
 
-// Declaración adelantada de AnimacionAtaque
 class AnimacionAtaque;
 
+// Esta clase es la que se encarga de todo el combate entre dos Pokémon
 class Combate {
 private:
     sf::RenderWindow& ventana;
@@ -29,25 +29,25 @@ private:
     int opcionSeleccionada;
     float tiempoAnimacion;
     
-    // Elementos de UI
+    // Acá guardo todos los elementos de la interfaz de combate
     sf::Text textoJugador;
     sf::Text textoOponente;
     std::vector<sf::Text> opcionesAtaque;
     sf::RectangleShape panelInferior;
 
-    // Sprites de Pokémon
+    // Sprites de los Pokémon en combate
     sf::Texture texturaPokemonJugador;
     sf::Sprite spritePokemonJugador;
     sf::Texture texturaPokemonOponente;
     sf::Sprite spritePokemonOponente;
 
-    // Sonidos
+    // Sonidos para selección y ataque
     sf::SoundBuffer bufferSeleccion;
     sf::Sound sonidoSeleccion;
     sf::SoundBuffer bufferAtaque;
     sf::Sound sonidoAtaque;
 
-    // Animación
+    // Animación de ataque actual
     std::unique_ptr<AnimacionAtaque> animacionActual;
     
     void dibujarBarraVida(float x, float y, float ancho, float alto, float porcentaje);
@@ -60,7 +60,7 @@ public:
     bool iniciarCombate();
 };
 
-// Clase para animaciones de ataque
+// Esta clase la uso para animar los ataques visualmente
 class AnimacionAtaque {
 public:
     AnimacionAtaque(sf::Sprite& sprite, sf::Vector2f direccion, float duracion = 0.5f);

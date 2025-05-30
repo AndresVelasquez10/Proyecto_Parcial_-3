@@ -18,46 +18,45 @@ private:
     void drawMenu();
     void handleMenuInput();
 
-    // Estados del juego
+    // Enum para saber en qué estado está el juego
     enum class GameState {
         MainMenu,
         Playing,
         Battle
     };
 
-    GameState currentState = GameState::MainMenu;
-
-    // Ventana
     sf::RenderWindow window;
 
-    // Fondo
     sf::Texture backgroundTexture;
     sf::Sprite background;
 
-    // Jugador
     Player player;
 
-    // Pokémon salvaje
+    GameState currentState = GameState::MainMenu;
+
     Pokemon salvaje;
 
-    // Reloj
     sf::Clock clock;
 
-    // Menú principal
+    // Todo lo relacionado al menú principal lo tengo aquí
     sf::Font menuFont;
     std::vector<sf::Text> menuItems;
     int selectedMenuItem = 0;
+    sf::Text instructionText;
     
-    // Botones del menú
     sf::RectangleShape startButton;
     sf::RectangleShape exitButton;
     sf::Text startText;
     sf::Text exitText;
     
-    // Texto de título
     sf::Text titleText;
 
-    // Sonidos
+    // Sonido para cuando selecciono algo en el menú
     sf::SoundBuffer menuSelectBuffer;
     sf::Sound menuSelectSound;
+
+    // Para mostrar el resultado del combate
+    sf::Text resultText;
+    float resultDisplayTime = 0.0f;
+    bool battleResult = false;
 };

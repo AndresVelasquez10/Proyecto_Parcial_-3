@@ -3,66 +3,79 @@
 
 Game::Game() : 
     window(sf::VideoMode(800, 600), "Pokemon Game"),
-    salvaje("Bulbasaur", 110),
-    currentState(GameState::MainMenu)  // Inicializar estado como menú
+    currentState(GameState::MainMenu),
+    salvaje("Bulbasaur", 110)
 {
+    // Cargo el fondo, si falla genero uno verde simple
     if (!backgroundTexture.loadFromFile("assets/textures/Fondo.png")) {
         std::cerr << "Error cargando fondo!\n";
-        // Crear fondo de emergencia
         backgroundTexture.create(800, 600);
         sf::Image img;
-        img.create(800, 600, sf::Color(0, 100, 0)); // Verde oscuro
+        img.create(800, 600, sf::Color(0, 100, 0));
         backgroundTexture.update(img);
     }
     background.setTexture(backgroundTexture);
     
-    // Cargar textura del jugador (descomentado)
-    // player.loadTexture("assets/textures/player_new.png");
-    // player.setPosition(400, 300);
-    // player.setScale(0.8f);
-
-    // Inicializar menú
+    // Escalo el fondo para que siempre ocupe toda la ventana
+    sf::Vector2u textureSize = backgroundTexture.getSize();
+    sf::Vector2u windowSize = window.getSize();
+    if (textureSize.x > 0 && textureSize.y > 0) {
+        float scaleX = static_cast<float>(windowSize.x) / textureSize.x;
+        float scaleY = static_cast<float>(windowSize.y) / textureSize.y;
+        background.setScale(scaleX, scaleY);
+    }
+    
     if (!menuFont.loadFromFile("assets/fonts/pokemon.ttf")) {
         std::cerr << "Error cargando fuente para menú\n";
-        // Intentar cargar una fuente por defecto
         if (!menuFont.loadFromFile("/usr/share/fonts/truetype/arial.ttf")) {
             std::cerr << "No se pudo cargar fuente alternativa\n";
         }
     }
 
-    // Configurar título
+    // Configuro el título principal del menú
     titleText.setFont(menuFont);
     titleText.setString("POKEMON GAME");
     titleText.setCharacterSize(60);
     titleText.setFillColor(sf::Color::Yellow);
     titleText.setOutlineColor(sf::Color::Blue);
     titleText.setOutlineThickness(2);
-    titleText.setPosition(200, 100);
+    
+    sf::FloatRect titleBounds = titleText.getLocalBounds();
+    titleText.setOrigin(titleBounds.left + titleBounds.width/2.0f,
+                       titleBounds.top + titleBounds.height/2.0f);
+    titleText.setPosition(window.getSize().x/2, 150);
 
-    // Configurar botones
+    startButton.setPosition(window.getSize().x * 0.25f, window.getSize().y * 0.4f);
+    exitButton.setPosition(window.getSize().x * 0.25f, window.getSize().y * 0.6f);
+
+    startText.setPosition(startButton.getPosition().x + startButton.getSize().x/2,
+                        startButton.getPosition().y + startButton.getSize().y/2);
+    exitText.setPosition(exitButton.getPosition().x + exitButton.getSize().x/2,
+                        exitButton.getPosition().y + exitButton.getSize().y/2);
+
     startButton.setSize(sf::Vector2f(400, 100));
-    startButton.setFillColor(sf::Color(30, 150, 30, 255));  // Color verde (sin transparencia)
+    startButton.setFillColor(sf::Color(30, 150, 30, 255));
     startButton.setOutlineThickness(5);
     startButton.setOutlineColor(sf::Color::Black);
-    startButton.setPosition(200, 250);
+    startButton.setPosition(window.getSize().x * 0.25f, window.getSize().y * 0.4f);
     
     exitButton.setSize(sf::Vector2f(400, 100));
-    exitButton.setFillColor(sf::Color(150, 30, 30, 255));   // Color rojo (sin transparencia)
+    exitButton.setFillColor(sf::Color(150, 30, 30, 255));
     exitButton.setOutlineThickness(5);
     exitButton.setOutlineColor(sf::Color::Black);
-    exitButton.setPosition(200, 380);
+    exitButton.setPosition(window.getSize().x * 0.25f, window.getSize().y * 0.6f);
     
-    // Configurar textos de botones - CORREGIDO
+    // Configuro los textos de los botones del menú
     startText.setFont(menuFont);
     startText.setString("INICIAR COMBATE");
     startText.setCharacterSize(40);
     startText.setFillColor(sf::Color::White);
     startText.setStyle(sf::Text::Bold);
+    startText.setOutlineColor(sf::Color::Black);
+    startText.setOutlineThickness(1);
     
-    // Centrar texto en botones
     sf::FloatRect textBounds = startText.getLocalBounds();
-    startText.setOrigin(textBounds.left + textBounds.width/2.0f,
-                       textBounds.top + textBounds.height/2.0f);
+    startText.setOrigin(textBounds.width/2, textBounds.height/2);
     startText.setPosition(startButton.getPosition().x + startButton.getSize().x/2,
                          startButton.getPosition().y + startButton.getSize().y/2);
     
@@ -71,32 +84,43 @@ Game::Game() :
     exitText.setCharacterSize(40);
     exitText.setFillColor(sf::Color::White);
     exitText.setStyle(sf::Text::Bold);
+    exitText.setOutlineColor(sf::Color::Black);
+    exitText.setOutlineThickness(1);
     
     textBounds = exitText.getLocalBounds();
-    exitText.setOrigin(textBounds.left + textBounds.width/2.0f,
-                      textBounds.top + textBounds.height/2.0f);
+    exitText.setOrigin(textBounds.width/2, textBounds.height/2);
     exitText.setPosition(exitButton.getPosition().x + exitButton.getSize().x/2,
                         exitButton.getPosition().y + exitButton.getSize().y/2);
 
-    // Sonido de menú
-    if (!menuSelectBuffer.loadFromFile("assets/sounds/menu_select.mp3")) {
-        std::cerr << "Error cargando sonido de menú\n";
-    } else {
-        menuSelectSound.setBuffer(menuSelectBuffer);
-    }
+    // Texto de instrucción para el modo Playing
+    instructionText.setFont(menuFont);
+    instructionText.setString("Presiona ESPACIO para iniciar");
+    instructionText.setCharacterSize(40);
+    instructionText.setFillColor(sf::Color::Yellow);
+    instructionText.setOutlineColor(sf::Color::Black);
+    instructionText.setOutlineThickness(2);
+    
+    sf::FloatRect instructionBounds = instructionText.getLocalBounds();
+    instructionText.setOrigin(instructionBounds.width/2, instructionBounds.height/2);
+    instructionText.setPosition(window.getSize().x/2, window.getSize().y * 0.7f);
 
-    // Configurar texto de instrucción
-    // instructionText.setFont(menuFont);
-    // instructionText.setString("Presiona ESPACIO para iniciar");
-    // instructionText.setCharacterSize(40);
-    // instructionText.setFillColor(sf::Color::White);
+    // Texto para mostrar el resultado del combate
+    resultText.setFont(menuFont);
+    resultText.setCharacterSize(80);
+    resultText.setOutlineColor(sf::Color::Black);
+    resultText.setOutlineThickness(4);
+    resultText.setPosition(window.getSize().x/2, window.getSize().y/2);
+    
+    sf::FloatRect resultBounds = resultText.getLocalBounds();
+    resultText.setOrigin(resultBounds.width/2, resultBounds.height/2);
 
-    // sf::FloatRect instructionBounds = instructionText.getLocalBounds();
-    // instructionText.setOrigin(instructionBounds.left + instructionBounds.width/2.0f,
-    //                          instructionBounds.top + instructionBounds.height/2.0f);
-    // instructionText.setPosition(window.getSize().x/2, 350);
+    // Cargo el sprite del jugador
+    player.loadTexture("assets/textures/player_new.png");
+    player.setPosition(400, 300);
+    player.setScale(0.8f);
 }
 
+// Dibujo el menú principal
 void Game::drawMenu() {
     window.clear();
     window.draw(background);
@@ -108,6 +132,7 @@ void Game::drawMenu() {
     window.display();
 }
 
+// Aquí manejo toda la interacción del usuario en el menú principal
 void Game::handleMenuInput() {
     sf::Event event;
     while (window.pollEvent(event)) {
@@ -115,11 +140,9 @@ void Game::handleMenuInput() {
             window.close();
         }
 
-        // Manejar movimiento del mouse - CORRECTO
         if (event.type == sf::Event::MouseMoved) {
             sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
             
-            // Resaltar botón bajo el mouse
             if (startButton.getGlobalBounds().contains(mousePos)) {
                 startButton.setOutlineColor(sf::Color::Yellow);
                 exitButton.setOutlineColor(sf::Color::Black);
@@ -132,31 +155,24 @@ void Game::handleMenuInput() {
             }
         }
 
-        // Manejar clics del mouse - CORREGIDO (Vector2i en lugar de Vector2f)
         if (event.type == sf::Event::MouseButtonPressed && 
             event.mouseButton.button == sf::Mouse::Left) {
             
-            // Usar Vector2i para las coordenadas del mouse
             sf::Vector2f mousePos = window.mapPixelToCoords(sf::Vector2i(
                 event.mouseButton.x, 
                 event.mouseButton.y
             ));
             
-            std::cout << "Mouse clicked at: " << mousePos.x << ", " << mousePos.y << "\n";
-            
             if (startButton.getGlobalBounds().contains(mousePos)) {
-                std::cout << "Start button clicked!\n";
                 if (menuSelectSound.getStatus() == sf::Sound::Stopped) {
                     menuSelectSound.play();
                 }
                 currentState = GameState::Playing;
             } else if (exitButton.getGlobalBounds().contains(mousePos)) {
-                std::cout << "Exit button clicked!\n";
                 window.close();
             }
         }
 
-        // Manejar teclado
         if (event.type == sf::Event::KeyPressed) {
             if (event.key.code == sf::Keyboard::Enter) {
                 if (menuSelectSound.getStatus() == sf::Sound::Stopped) {
@@ -171,62 +187,79 @@ void Game::handleMenuInput() {
     }
 }
 
+// Solo manejo eventos básicos fuera del menú (como cerrar la ventana)
 void Game::handleEvents() {
     sf::Event event;
     while (window.pollEvent(event)) {
         if (event.type == sf::Event::Closed) {
             window.close();
         }
-        
-        // Manejar eventos específicos del juego
-        if (currentState == GameState::Playing) {
-            // Aquí puedes añadir eventos específicos del juego si son necesarios
-        }
     }
 }
 
+// Aquí es donde realmente ocurre el combate Pokémon
 void Game::startPokemonBattle() {
-    // Curar Pokémon antes del combate
     player.getPokemonActual().recibirDanio(-player.getPokemonActual().getVidaMaxima());
     salvaje.recibirDanio(-salvaje.getVidaMaxima());
     
-    // Crear instancia de Combate
     Combate combate(window, player.getPokemonActual(), salvaje);
-    
-    // Iniciar combate
     bool victoria = combate.iniciarCombate();
+    battleResult = victoria;
+    resultDisplayTime = 4.0f;
     
-    // Manejar resultado
+    resultText = sf::Text();
+    resultText.setFont(menuFont);
+    
     if (victoria) {
-        std::cout << "¡Ganaste el combate!\n";
+        resultText.setString("¡VICTORIA!");
+        resultText.setFillColor(sf::Color::Green);
     } else {
-        std::cout << "Perdiste el combate...\n";
+        resultText.setString("¡DERROTA!");
+        resultText.setFillColor(sf::Color::Red);
+    }
+    
+    resultText.setCharacterSize(80);
+    resultText.setOutlineColor(sf::Color::Black);
+    resultText.setOutlineThickness(4);
+    
+    sf::FloatRect bounds = resultText.getLocalBounds();
+    resultText.setOrigin(bounds.width/2, bounds.height/2);
+    resultText.setPosition(window.getSize().x/2, window.getSize().y/3);
+    
+    window.clear();
+    window.draw(background);
+    
+    sf::RectangleShape resultBackground(sf::Vector2f(
+        bounds.width + 100, 
+        bounds.height + 50
+    ));
+    resultBackground.setFillColor(sf::Color(0, 0, 0, 200));
+    resultBackground.setOrigin(resultBackground.getSize().x/2, resultBackground.getSize().y/2);
+    resultBackground.setPosition(resultText.getPosition());
+    
+    window.draw(resultBackground);
+    window.draw(resultText);
+    window.display();
+    
+    sf::Clock waitClock;
+    while (waitClock.getElapsedTime().asSeconds() < 3.0f) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                window.close();
+                return;
+            }
+        }
     }
 }
 
+// Actualizo el estado del juego, aquí detecto si se presiona espacio para iniciar el combate
 void Game::update(float deltaTime) {
+    if (resultDisplayTime > 0.0f) {
+        resultDisplayTime -= deltaTime;
+    }
+    
     if (currentState == GameState::Playing) {
-        // Manejar movimiento
-        float dx = 0, dy = 0;
-        
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) dx = -1;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) dx = 1;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) dy = -1;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) dy = 1;
-        
-        player.move(dx, dy, deltaTime);
-        
-        // Cambiar Pokémon
-        static bool cPressed = false;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::C) && !cPressed) {
-            player.cambiarPokemon();
-            cPressed = true;
-        }
-        if (!sf::Keyboard::isKeyPressed(sf::Keyboard::C)) {
-            cPressed = false;
-        }
-        
-        // Iniciar combate - SOLO si estamos en estado Playing
         static bool spacePressed = false;
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !spacePressed) {
             spacePressed = true;
@@ -238,25 +271,30 @@ void Game::update(float deltaTime) {
     }
 }
 
+// Renderizo la ventana según el estado actual del juego
 void Game::render() {
     window.clear();
+    window.draw(background);
     
     if (currentState == GameState::MainMenu) {
-        drawMenu();
+        window.draw(titleText);
+        window.draw(startButton);
+        window.draw(exitButton);
+        window.draw(startText);
+        window.draw(exitText);
     } 
     else if (currentState == GameState::Playing) {
-        window.draw(background);
-        player.draw(window);
+        window.draw(instructionText);
     }
     
     window.display();
 }
 
+// Bucle principal del juego
 void Game::run() {
     while (window.isOpen()) {
         float deltaTime = clock.restart().asSeconds();
         
-        // Manejar eventos según el estado actual
         if (currentState == GameState::MainMenu) {
             handleMenuInput();
         } 

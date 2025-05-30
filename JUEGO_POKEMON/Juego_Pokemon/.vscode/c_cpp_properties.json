@@ -1,0 +1,19 @@
+{
+    "configurations": [
+        {
+            // Esta configuración la uso para que VS Code entienda dónde buscar los headers y cómo compilar en Linux
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/usr/include/SFML",
+                "${workspaceFolder}/include"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c17",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "linux-gcc-x64"
+        }
+    ],
+    "version": 4
+}

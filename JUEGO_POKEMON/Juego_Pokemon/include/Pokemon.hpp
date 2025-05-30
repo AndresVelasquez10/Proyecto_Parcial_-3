@@ -15,6 +15,7 @@ private:
 public:
     Pokemon(const std::string& nombre = "Pokemon", int vida_max = 100);
     
+    // Estos métodos me permiten acceder fácilmente a los datos principales del Pokémon
     const std::string& getNombre() const { return nombre; }
     int getVidaActual() const { return vida_actual; }
     int getVidaMaxima() const { return vida_maxima; }

@@ -1,0 +1,25 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            // Esta tarea me permite compilar archivos individuales de SFML desde VS Code en Linux
+            "label": "Compilar SFML (Linux)",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-g",
+                "${file}",
+                "-o",
+                "${fileDirname}/bin/${fileBasenameNoExtension}",
+                "-lsfml-graphics",
+                "-lsfml-window",
+                "-lsfml-system"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$gcc"]
+        }
+    ]
+}

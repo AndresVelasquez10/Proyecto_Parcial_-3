@@ -2,26 +2,10 @@
 
 Pokemon::Pokemon(const std::string& nombre, int vida_max) 
     : nombre(nombre), vida_actual(vida_max), vida_maxima(vida_max) {
-    // Ataques básicos
-    ataques.push_back(Ataque("Golpeo", 20));
-    ataques.push_back(Ataque("Látigo", 30));
+    // Siempre le doy dos ataques básicos a cada Pokémon al crearlo
+    ataques.push_back(Ataque("Trueno", 20));
+    ataques.push_back(Ataque("Cabezazo", 30));
 }
-
-// std::string Pokemon::getNombre() const {
-//     return nombre;
-// }
-
-// int Pokemon::getVidaActual() const {
-//     return vida_actual;
-// }
-
-// int Pokemon::getVidaMaxima() const {
-//     return vida_maxima;
-// }
-
-// const std::vector<Ataque>& Pokemon::getAtaques() const {
-//     return ataques;
-// }
 
 void Pokemon::recibirDanio(int cantidad) {
     vida_actual -= cantidad;
